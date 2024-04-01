@@ -1,6 +1,7 @@
 import { Product } from "./product.model";
 import "reflect-metadata";
 import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 
 const products = [
   { title: "Carpet", price: 37 },
@@ -17,3 +18,14 @@ const productsAsClassInstances = plainToClass(classToConvert, dataToBeTransforme
 for (const prod of productsAsClassInstances) {
     console.log(prod.getInformation());
 }
+
+// Class validation using decorators from class-validation 
+const newProd = new Product('', -5.99);
+validate(newProd).then(errors => {
+  if (errors.length > 0) {
+    console.log('Validation errors: ')
+    console.log(errors);
+  } else {
+    console.log(newProd.getInformation());
+  }
+})
