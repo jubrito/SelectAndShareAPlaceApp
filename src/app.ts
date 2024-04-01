@@ -1,12 +1,24 @@
-const form = document.querySelector('form')!;
-const addressInput = document.getElementById('address')! as HTMLInputElement;
+import axios from "axios";
 
-const GOOGLE_API_KEY = 'AIzaSyCXpyHNPV8iLjxJrGk_7SxiqKUIXFC3z7E';
-const mapsApiURL = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=${GOOGLE_API_KEY}`
+const form = document.querySelector("form")!;
+const addressInput = document.getElementById("address")! as HTMLInputElement;
 
-function searchAddressHandler(event: Event){
-    event.preventDefault();
-    const enteredAddress = addressInput.value;
+const GOOGLE_API_KEY = "AIzaSyCXpyHNPV8iLjxJrGk_7SxiqKUIXFC3z7E";
+function searchAddressHandler(event: Event) {
+  event.preventDefault();
+  const enteredAddress = addressInput.value;
+
+  axios
+    .get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(
+        enteredAddress
+      )}&key=${GOOGLE_API_KEY}`
+    )
+    .then(response => {
+        console.log(response)
+    })
+    .catch((err) => {
+      console.log("Error:" + err);
+    });
 }
-
-form.addEventListener('submit', searchAddressHandler)
+form.addEventListener("submit", searchAddressHandler);
